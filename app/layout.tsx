@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Nunito_Sans, Bitcount_Grid_Single } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bitcountGrid = Bitcount_Grid_Single({
+  variable: "--font-bitcountgrid",
   subsets: ["latin"],
+});
+
+const nunitoSans = Nunito_Sans({
+  variable: "--font-nunito",
 });
 
 export const metadata: Metadata = {
@@ -23,12 +30,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${nunitoSans.variable}
+           ${bitcountGrid.variable} antialiased`}
+        >
+          <Header />
+          <div className="min-h-screen flex">
+            <Sidebar />
+            <div
+              className="flex-1 bg-gray-100 p-4
+               overflow-y-auto scrollbar-hide"
+            >
+              {children}
+            </div>
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
